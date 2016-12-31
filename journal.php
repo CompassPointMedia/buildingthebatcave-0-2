@@ -26,8 +26,86 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 <div id="main-wrap">
     <?php require($assets_root.'header.php'); ?>
     <div id="content">
+        <div class="headNotice">Note: items here entered newest to oldest</div>
     <!-- Alfred, go ahead and put content in here manually for now -->
-    This is the journal
+        <div class="article">
+            <h2>Building of the Batcave Begins</h2>
+            <h3>Journal Entry #1, Dec. 30th 2016</h3>
+            Today I started a new Git repository on bitbucket (yes I have a github account but use bitbucket more).  I developed the basic template site and used a simple php include() directive for a top and bottom navigation.  Boy is this a rough start!  But the HTML is solid.  I’m not at Minimum Viable Release point right now expect myself and Alfred to be tracking bad guys by mid-January, and have comm up (email) as well.
+            <br /><br />
+
+            So, if my system has enough memory to fire off Vagrant/VM, then I'll be able to have buildingthebatcave-local.com on my system and go through the standard test-local-deploy-remote dev process.  Vagrant up booting worked; here are the steps I'm taking:
+            <br />
+            <ol>
+                <li>at bitbucket I create a new empty repository, `buildingthebatcave`
+                <li>in my Vagrant box linked folder I create a folder called buildingthebatcave, then cd to it.  I type `git clone https://samfullman@bitbucket.org/samfullman/buildingthebatcave.git` and enter my password
+                <li>I then rename the cloned folder to `src`
+                <li>I also create one folder called `log` and one called `private`.  Log will be for error and traffic logs, and private will be for passwords, keeping my private passwords out of the repo entirely.  I don't like to depend on .gitignore for multiple deployment configs not being tracked; there should be no instance of a password in the git repository.  If you have a different stratety I'd love to hear from you on this.
+            </ol>
+
+            <h3>Running as a Website Locally</h3>
+            I booted up my Vagrant VM (already configured for client work), then entered
+            <br /><br />
+
+            <code>ssh vagrant@192.168.33.10 #I am using ubuntu/trusty64</code>
+            <br /><br />
+
+            and added the following VirtualHost file as /etc/apache2/sites-available/buildingthebatcave-local.com.conf:
+            <br /><br />
+
+            <code><pre>
+&lt;VirtualHost *:80&gt;
+    ServerAdmin weshootspammers@not-a-real-website-dummy.com<
+    DocumentRoot /var/www/buildingthebatcave/src
+    ServerName buildingthebatcave-local.com
+    ServerAlias www.buildingthebatcave-local.com admin.buildingthebatcave-local.com
+    ErrorLog /var/www/buildingthebatcave/log/error.log
+    CustomLog /var/www/buildingthebatcave/log/access.log combined
+&lt;/VirtualHost&gt;
+                </pre>
+            </code>
+
+            I then typed:
+            <br /><br />
+
+            <code>ln -s ../sites-available/buildingthebatcave-local.com.conf</code>
+
+            in the ../sites-enabled folder
+            <br /><br />
+
+            Then
+            <br /><br />
+
+            <code>service apache2 restart<br />
+                apache2 -S #verify the host is there</code>
+            <br /><br />
+
+            The "/etc/hosts" file on a Windows 10 machine is located at: `C:\Windows\System32\Drivers\etc\hosts`.  I added the following lines (you'll need to run notepad etc. as an administrator on this file):
+            <br /><br />
+
+            <code># Added 2016-12-30 - this should be good, Alfred<br />
+            192.168.33.10	buildingthebatcave-local.com<br />
+            192.168.33.10	www.buildingthebatcave-local.com<br />
+            192.168.33.10	admin.buildingthebatcave-local.com #for future use<br />
+            </code>
+            <br /><br />
+
+            Now it's time to start coding.  In /var/www/buildingthebatcave/src, I create index.php with:
+            <br /><br />
+
+            <code>
+                &lt;?php phpinfo();  #omit the closing ?&gt; php tag
+            </code>
+            <br /><br />
+
+            And.. Great Success!  I've got php working - but a little futuristic for this time in the batcave era, a whopping PHP Version 5.5.9-1ubuntu4.20 (be calm reader and remember the Batcave Philosophy - we're good).  I'm now ready to use PHPStorm by JetBrains to do some creating, and SourceTree to commit and get it up to my repository.
+            <br /><br />
+
+            At this point the most important thing is to function on a ticket-like system so as to add meaningful updates in contextual chunks along the way.
+            <br /><br />
+
+
+        </div>
     </div>
     <?php require($assets_root.'footer.php'); ?>
 </div>
