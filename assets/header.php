@@ -13,7 +13,7 @@
         <?php
         foreach($content[$thisVersion]['navigation'] as $fileName=>$data){
             ?>
-            <li><a href="<?php echo $linkRoot.$fileName;?>" title="<?php echo htmlspecialchars($data[1]);?>"><?php echo $data[0];?></a> </li>
+            <li><a href="<?php echo $linkRoot.($fileName == 'index.php' ? '' :$fileName);?>" title="<?php echo htmlspecialchars($data[1]);?>"><?php echo $data[0];?></a> </li>
             <?php
         }
         ?>
