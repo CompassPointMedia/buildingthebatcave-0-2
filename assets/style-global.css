@@ -5,11 +5,14 @@ the following initial coding was done by hand from memory - all the basic elemen
 
 .version-0-1 #main-wrap{
     font-family: Arial, Helvetica, SansSerif;
-    font-size: 13px;
+    font-size: 14px;
     width: 90%;
     max-width: 1100px;
-    background-color: #eee4ad;
+    background-color: #eee9ed;
     margin: 0px auto;
+}
+.version-0-1 h1, .version-0-1 h2, .version-0-1 h3{
+    font-family: Georgia, Serif;
 }
 .version-0-1 #header{
     position: relative;
@@ -48,4 +51,13 @@ the following initial coding was done by hand from memory - all the basic elemen
 .version-0-1 #legal{
     font-size:95%;
     color: #999;
+}
+.version-0-1 .article{
+    border-top:1px solid #999;
+    border-bottom: 1px solid #999;
+    margin-bottom:20px;
+    padding: 15px 0px;
+}
+.version-0-1 .article > h2{
+    background-color: #ffdacc;
 }

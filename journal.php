@@ -29,6 +29,44 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
         <div class="headNotice">Note: items here entered newest to oldest</div>
     <!-- Alfred, go ahead and put content in here manually for now -->
         <div class="article">
+            <h2>Next Steps for the Batcave</h2>
+            <h3>Journal Entry #2, Dec. 31th 2016</h3>
+
+            So we have a working site and can replicate the process we started up to a point: Copy a template page as a new php page, and register it in the assets/config.php file.  This will get difficult (and messy) really quick as we don't have a tree structure for our navigation, and my bat sensibilities tell me I don't want physical folders on my site.  Folders should mean logical structure of platform, not logical structure of a specific website.
+            <br /><br />
+            I'm going to introduce a /content folder and have .gitignore exclude it.  But I also want to have a system in place on the front-end routing so that I don't have any actual URL links to the /content folder.  "Content" means something internally, not to the URL or outside world.  So instead of `buildingthebatcave.com/content/journal.php` I would like `buildingthebatcave.com/journal` - much better SEO-wise I might add.
+            <br /><br />
+            This implies a couple things:
+            <ol>
+                <li>I need my first controller logic; ideally this should be modular</li>
+                <li>This particular site will be content-centric.  A /page-name means a page by that name without any particular hierarchy.  So the controller mapping would be as follows:
+                <ul>
+                    <li>No page name at all maps to /content/index.php</li>
+                    <li>A call to `buildingthebatcave.com/page-name` maps to a view page in /content/page-name.php.  We're a long way from object-oriented still but it's a start.</li>
+                    <li>If none of the above apply, we have a 404.</li>
+                    <li>This gives us two options: pages in the /content folder, including the default/index page, or a 404</li>
+                    <li>We haven't dealt with requests in the URL yet, or any type of useful hierarchy such as `buildingthebatcave.com/downloads/utilities/email-utility/r/v/1.01`.  <strong>However</strong>, I'm choosing a restricted path value like `/r/` meaning request, with all variables (in this case v=1.01) being paired with values after this.</li>
+                    <li>The above URL could also be expressed as `buildingthebatcave.com/downloads/utilities/email-utility?v=1.01`</li>
+                </ul>
+                </li>
+            </ol>
+            <br />
+            Obviously it's time to implement mod_rewrite to make this work.
+            <br /><br />
+            Note that if I choose to refactor a future version on Zend or CodeIgniter or Yii, the controller constraints I have chosen and the system for implementing them may conflict.
+            <br /><br />
+            So specific steps in the process are:<br />
+            <ul>
+                <li/>index.php becomes /content/index-original.php
+                <li/>make a note in journal.php and version.php - "this is a hard-coded page and is no longer used in the batcave"
+                <li/>develop the controller
+                <li/>specify new nav for version 0.02 in config
+                <li/>at this point, we should be able to toggle between versions with no loss of content
+                <li/>let's beging writing articles, for now with the keyword "granite" for the file name, e.g. /granite-working-with-nodejs
+            </ul>
+
+        </div>
+        <div class="article">
             <h2>Building of the Batcave Begins</h2>
             <h3>Journal Entry #1, Dec. 30th 2016</h3>
             Today I started a new Git repository on bitbucket (yes I have a github account but use bitbucket more).  I developed the basic template site and used a simple php include() directive for a top and bottom navigation.  Boy is this a rough start!  But the HTML is solid.  I’m not at Minimum Viable Release point right now expect myself and Alfred to be tracking bad guys by mid-January, and have comm up (email) as well.

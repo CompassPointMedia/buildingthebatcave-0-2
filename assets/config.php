@@ -45,6 +45,7 @@ $content = array(
 if(preg_match('/version([-0-9]+)/',$serverSubdomain,$m)){
     $thisVersion = str_replace('-','.',$m[1]);
 }else{
+    //to include www etc.
     $thisVersion = $mostCurrentVersion;
 }
 
