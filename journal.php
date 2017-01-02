@@ -22,7 +22,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
     echo $content[$thisVersion]['navigation'][$fileName][1];
     ?></title>
 </head>
-<body class="version-<?php echo str_replace('.','-',$thisVersion);?>">
+<!-- version is hard-coded for these pages -->
+<body class="version-0-1">
 <div id="main-wrap">
     <?php require($assets_root.'header.php'); ?>
     <div id="content">

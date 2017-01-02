@@ -1,5 +1,8 @@
 <?php
 /**
+ * todo: big deprecated notice here
+ */
+/**
  * Created by PhpStorm.
  * User: Samuel Fullman
  * Copied from initial template
@@ -27,8 +30,14 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 <div id="main-wrap">
     <?php require($assets_root.'header.php'); ?>
     <div id="content">
-    <!-- Alfred, go ahead and put content in here manually for now -->
-    This is the version page.  Version: <?php echo $thisVersion;?>
+
+        You're in version 0.1 - there were no articles on the Batcave back then.  Select a newer version of the site by selecting from the version list (upper right corner).  If you want to view the repository fork of version 0.1-0.2, the link will be provided soon.
+        <br /><br />
+        --Sam
+        <br /><br />
+
+
+
     </div>
     <?php require($assets_root.'footer.php'); ?>
 </div>

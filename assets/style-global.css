@@ -61,3 +61,71 @@ the following initial coding was done by hand from memory - all the basic elemen
 .version-0-1 .article > h2{
     background-color: #ffdacc;
 }
+
+
+
+/**
+Version 0.2 - same initial format as 0.1, just a color change; we're not at a responsive design template yet
+ */
+body.version-0-2{
+    background-color: #000;
+}
+.version-0-2 #main-wrap{
+    font-family: Arial, Helvetica, SansSerif;
+    font-size: 14px;
+    width: 90%;
+    max-width: 1100px;
+    color:#fff;
+    background-color: #333333;
+    margin: 0px auto;
+}
+.version-0-2 h1, .version-0-2 h2, .version-0-2 h3{
+    font-family: Georgia, Serif;
+}
+.version-0-2 #header{
+    position: relative;
+    padding: 5px 20px;
+    border-bottom: 1px dashed #666;
+    margin-bottom: 10px;
+}
+.version-0-2 #content{
+    padding: 0px 20px;
+    min-height: 250px;
+}
+.version-0-2 #footer{
+    margin: 15px 40px;
+}
+
+.version-0-2 .version{
+    position: absolute;
+    top:10px;
+    right:10px;
+    color: #666;
+}
+
+.version-0-2 .nav li{
+    display: inline;
+    background-color: lightblue;
+    padding: 10px;
+    margin-right: 10px;
+}
+.version-0-2 .nav li a{
+    font-weight: 400;
+    font-size:115%;
+    text-decoration: none;
+    color: #333;
+}
+
+.version-0-2 #legal{
+    font-size:95%;
+    color: #999;
+}
+.version-0-2 .article{
+    border-top:1px solid #999;
+    border-bottom: 1px solid #999;
+    margin-bottom:20px;
+    padding: 15px 0px;
+}
+.version-0-2 .article > h2{
+    background-color: #ffdacc;
+}
