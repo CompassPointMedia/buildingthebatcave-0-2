@@ -26,6 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
     <title><?php
     echo $content[$thisVersion]['navigation'][$fileName][1];
     ?></title>
+    <link rel="icon" type="image/ico" href="/favicon.ico">
 </head>
 <!-- version is hard-coded for these pages -->
 <body class="version-0-1">
