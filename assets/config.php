@@ -9,9 +9,14 @@
 */
 //yes I would set these in an object sometime in the distant future..
 
+define('SITE_ROOT', str_replace('assets/config.php', '', __FILE__));
+define('ASSET_ROOT', SITE_ROOT.'assets/');
+define('CONTENT_ROOT', SITE_ROOT.'content/');
+define('VENDOR_ROOT', ASSET_ROOT.'vendors/');
+define('FUNCTION_ROOT', ASSET_ROOT.'functions/');
 
 //require old-fashioned but useful utility functions
-require_once('functions/function_get_file_assets_v100.php');
+require_once(VENDOR_ROOT.'functions/function_get_file_assets_v100.php');
 
 //--------------- 2017-01-02 begin first Batcave logic for route handling --------------
 //create working variable for parsing
@@ -44,10 +49,19 @@ $a = preg_split('#/(r|s)/#i',$req_uri);
 if(count($a)>1){
     $_env->paramSchema = (strtolower(substr($req_uri,strlen($a[0]),3))=='/r/' ? 'request' : 'unspecified_request');
     $_env->rawParams = substr($req_uri, strlen($a[0])+3, strlen($req_uri) - strlen($a[0])+3);
+    if($_env->paramSchema == 'request'){
+        $tmp = explode('/',trim($_env->rawParams,'/'));
+        for($i=0; $i<count($tmp)/2; $i+=2){
+            $_env->params[$tmp[$i]] = isset($tmp[$i+1]) ? $tmp[$i+1] : '';
+        }
+    }else{
+        $_env->params = explode('/', trim($_env->rawParams,'/'));
+    }
     $req_uri = $a[0];
 }else{
     $_env->paramSchema = '';
     $_env->rawParams = '';
+    $_env->params = '';
 }
 
 $a = explode('/', trim($req_uri,'/'));
@@ -55,7 +69,7 @@ if(count($a) && !empty($a[0])){
     $_env->page = urldecode(array_pop($a));
     $_env->path = $a;
 }else{
-    $_env->page = 'index'; //by convention
+    $_env->page = 'index.php'; //by convention
     $_env->path = array(); //empty
 }
 //handle query and param requests - note param requests cannot be array, must be scalar
@@ -78,6 +92,8 @@ if($_env->rawQuerystring){
 }else{
     $_env->query = array();
 }
+//alias
+$fileName = $_env->page;
 #print_r($_env);
 //--------------- end Batcave logic for route handling --------------
 
@@ -92,13 +108,6 @@ $localSubdomain = $serverSubdomain . ($serverSubdomain ? '.': ''). $serverDomain
 $requestScheme = $_SERVER['REQUEST_SCHEME'];
 //used in navigation
 $linkRoot = $requestScheme.'://'.$localSubdomain.'/';
-
-//as long as we have physical pages, let's automate this
-$fileName = trim($_SERVER['SCRIPT_NAME'],'/');
-
-//where is this file stored
-$assets_root = $_SERVER['DOCUMENT_ROOT'].'/assets/';
-$content_root = $_SERVER['DOCUMENT_ROOT'].'/content/';
 
 
 $content = array(
@@ -119,6 +128,7 @@ $content = array(
         'comments' => 'BTB version 0.2 - Getting Serious Quickly.  We are now using mod_rewrite with our own home-grown routing system (procedural like the old days), but if I do say so myself quite adaptable.  We\'ve introduced a `content` folder which is registered in .gitignore; still hard-coded pages (no blocks or templates yet), but better organized.  Also we have a version toggler so you can go back to 0.1, or forward when the next changes to the Batcave are made.',
         'navigation' => array(
             'index.php' => array('Home', 'Building the Batcave - Home Page'),
+            'philosophy.php' => array('Philosophy', 'Building the Batcave Philosophy - What We\'re Accomplishing Here'),
             'articles.php' => array('Articles', 'Batcave technical articles'),
             'journal.php' => array('Journal', 'Building the Batcave - Development Journal'),
             'version.php' => array('Version', 'Version of this site'),
@@ -140,24 +150,40 @@ if(preg_match('/version([-0-9]+)/',$serverSubdomain,$m)){
     $thisVersion = $mostCurrentVersion;
 }
 
-if($thisVersion !== '0.1' && substr(strtolower($_env->page),-4)!=='.php'){
+$contentFiles = get_file_assets(CONTENT_ROOT);
+
+if($thisVersion !== '0.1'){
     //------------- route handling; map request to content assets -----------
     //this is dirt simple because our next dev step on the batcave will be to go to a framework
-    $contentFiles = get_file_assets($content_root);
 
-    if(empty($contentFiles[strtolower($_env->page).'.php'])){
+    if(empty($contentFiles[strtolower($fileName).(substr($fileName, -4) == '.php' ? '' : '.php')])){
         //this needs to be there
-        $page = '404.php';
+        $page = (!empty($contentFiles['404.php']) ? $contentFiles['404.php'] : exit('Could you please tell the developer that they "Need a `404.php` page in the /content folder"?  Maybe they\'re just really busy and weren\'t aware of this fact.'));
     }else{
-        $page = $contentFiles[strtolower($_env->page).'.php'];
+        $page = $contentFiles[strtolower($fileName).(substr($fileName, -4) == '.php' ? '' : '.php')];
     }
-    require_once($content_root.'/'.$page['name']);
+    require_once(CONTENT_ROOT.$page['name']);
     exit;
     //------------------------- end route handling ---------------------------
 }
 
-//one last exception for 0.1 for home page - we leave it in the repository because it kind of documents the whole site growth process
-if($thisVersion == '0.1' && $fileName=='index.php'){
-    require_once($_SERVER['DOCUMENT_ROOT'].'/index-original.php');
-    exit;
+//exceptions for 0.1 for home page - we leave it in the repository because it kind of documents the whole site growth process
+if($thisVersion == '0.1'){
+    if($fileName == 'index.php'){
+        //this was the first home page on the site
+        require_once(SITE_ROOT.'index-original.php');
+        exit;
+
+    }else if(file_exists(SITE_ROOT.$fileName) && empty($_env->path) && $fileName!=='config.php'){ // ..must be in the root of site
+        //let them in - it's either the original articles.php, journal.php, or version.php
+
+    }else if(file_exists(CONTENT_ROOT.$fileName . (substr($fileName, -4) == '.php' ? '' : '.php'))) {
+        //next precedence for the content folder
+        require_once(CONTENT_ROOT . $fileName . (substr($fileName, -4) == '.php' ? '' : '.php'));
+        exit;
+    }else{
+        require_once(CONTENT_ROOT.'404.php');
+        exit;
+    }
 }
+

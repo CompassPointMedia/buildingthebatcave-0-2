@@ -26,12 +26,15 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 <!-- version is hard-coded for these pages -->
 <body class="version-0-1">
 <div id="main-wrap">
-    <?php require($assets_root.'header.php'); ?>
+    <?php require(ASSET_ROOT.'header.php'); ?>
     <div id="content">
     <!-- Alfred, go ahead and put content in here manually for now -->
     This is the version page.  Version: <?php echo $thisVersion;?>
+
+        <span style="color:darkred;">We are in the site root, not the content folder!!</span>
+
     </div>
-    <?php require($assets_root.'footer.php'); ?>
+    <?php require(ASSET_ROOT.'footer.php'); ?>
 </div>
 
 </body>

@@ -31,9 +31,11 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 <!-- version is hard-coded for these pages -->
 <body class="version-0-1">
 <div id="main-wrap">
-    <?php require($assets_root.'header.php'); ?>
+    <?php require(ASSET_ROOT.'header.php'); ?>
     <div id="content">
     <!-- Alfred, go ahead and put content in here manually for now -->
+
+        <span style="color:darkred;">We are in the site root, not the content folder!!</span>
 
         This is the beginning of the Bat Cave!  I’ll explain more in subsequent posts and content updates to the site, but basically BTB is about taking all the technological skills available and getting “off the shoulders of giants” and learning the basics.  This introductory page will always be about this simple, but the source code for every step I took along the way (as well as getting the server set up, testing and archiving versions) will be available.
         <br /><br />
@@ -54,7 +56,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
         <br /><br />
 
     </div>
-    <?php require($assets_root.'footer.php'); ?>
+    <?php require(ASSET_ROOT.'footer.php'); ?>
 </div>
 
 </body>

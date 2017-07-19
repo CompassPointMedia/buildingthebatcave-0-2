@@ -26,10 +26,13 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 <!-- version is hard-coded for these pages -->
 <body class="version-0-1">
 <div id="main-wrap">
-    <?php require($assets_root.'header.php'); ?>
+    <?php require(ASSET_ROOT.'header.php'); ?>
     <div id="content">
         <div class="headNotice">Note: items here entered newest to oldest</div>
     <!-- Alfred, go ahead and put content in here manually for now -->
+
+        <span style="color:darkred;">We are in the site root, not the content folder!!</span>
+
         <div class="article">
             <h2>Next Steps for the Batcave</h2>
             <h3>Journal Entry #2, Dec. 31th 2016</h3>
@@ -147,7 +150,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 
         </div>
     </div>
-    <?php require($assets_root.'footer.php'); ?>
+    <?php require(ASSET_ROOT.'footer.php'); ?>
 </div>
 
 </body>

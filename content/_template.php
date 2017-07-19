@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 </head>
 <body class="version-<?php echo str_replace('.','-',$thisVersion);?>">
 <div id="main-wrap">
-    <?php require($assets_root.'header.php'); ?>
+    <?php require(ASSET_ROOT.'header.php'); ?>
     <div id="content">
         <h2>Batcave Component Template</h2>
         This is the template file - you're on your own
@@ -39,7 +39,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 
 
     </div>
-    <?php require($assets_root.'footer.php'); ?>
+    <?php require(ASSET_ROOT.'footer.php'); ?>
 </div>
 
 </body>
