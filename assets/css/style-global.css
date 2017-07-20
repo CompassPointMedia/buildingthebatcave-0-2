@@ -5,7 +5,7 @@ the following initial coding was done by hand from memory - all the basic elemen
 
 .version-0-1 #main-wrap{
     font-family: Arial, Helvetica, SansSerif;
-    font-size: 14px;
+    font-size: 13px;
     width: 90%;
     max-width: 1100px;
     background-color: #eee9ed;
@@ -69,13 +69,23 @@ Version 0.2 - same initial format as 0.1, just a color change; we're not at a re
  */
 body.version-0-2{
     background-color: #000;
+    color:#ccc;
+}
+.version-0-2 a{
+    color: beige;
+}
+.version-0-2 h1, .version-0-2 h2, .version-0-2 h3{
+    font-weight: 400;
+    font-family: "Lucida Grande";
+    background-color: #333333;
+    color: darkcyan;
 }
 .version-0-2 #main-wrap{
     font-family: Arial, Helvetica, SansSerif;
-    font-size: 14px;
+    font-size: 15px;
     width: 90%;
-    max-width: 1100px;
-    color:#fff;
+    max-width: 950px;
+    color:#bbbbbb;
     background-color: #333333;
     margin: 0px auto;
 }
@@ -125,7 +135,4 @@ body.version-0-2{
     border-bottom: 1px solid #999;
     margin-bottom:20px;
     padding: 15px 0px;
-}
-.version-0-2 .article > h2{
-    background-color: #ffdacc;
 }

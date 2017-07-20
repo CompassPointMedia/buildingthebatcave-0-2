@@ -17,6 +17,7 @@ define('FUNCTION_ROOT', ASSET_ROOT.'functions/');
 
 //require old-fashioned but useful utility functions
 require_once(VENDOR_ROOT.'functions/function_get_file_assets_v100.php');
+require_once(VENDOR_ROOT.'functions/function_js_email_encryptor_v100.php');
 
 //--------------- 2017-01-02 begin first Batcave logic for route handling --------------
 //create working variable for parsing
@@ -101,9 +102,14 @@ $fileName = $_env->page;
 
 $serverParts = explode('.', $_SERVER['SERVER_NAME']);
 $serverDomainExtension = array_pop($serverParts);
+if($serverParts[count($serverParts) - 1] == 'co'){
+    //e.g. co.fr - but this is incomplete and we'd need much more logic in the Domain model;
+    // see https://en.wikipedia.org/wiki/Second-level_domain
+    $serverDomainExtension = array_pop($serverParts) . '.'.$serverDomainExtension;
+}
 $serverDomain = array_pop($serverParts);
 $serverTld = $serverDomain.'.'.$serverDomainExtension;
-$serverSubdomain = (empty($serverParts) ? '' : current($serverParts));
+$serverSubdomain = (empty($serverParts) ? '' : current($serverParts)); //!!!!!
 $localSubdomain = $serverSubdomain . ($serverSubdomain ? '.': ''). $serverDomain.'.'.$serverDomainExtension;
 $requestScheme = $_SERVER['REQUEST_SCHEME'];
 //used in navigation
@@ -134,7 +140,19 @@ $content = array(
             'version.php' => array('Version', 'Version of this site'),
         ),
         'legal' => array(
+            'license' => 'See the LICENSE file.  This site and all downloads from it are covered under the MIT license',
             'content' => 'This legal disclaimer is for Building the Batcave version 0.2, &copy;2017 by Sam Fullman.  If you really want to steal something on a site where I\'m giving everything away anyway then please take it and I hope you have a place to sleep tonight.  If you become a millionaire, let me know, and buy me lunch',
+        ),
+        'updates' => array(
+            'Implemented `mod_rewrite`',
+            'Implemented article system; article files are in `/content` folder with prefix granite (a tribute to the difficulties excavating the batcave',
+            'Further improvements to the routing system; routes are not defined yet, but two types of pretty parameterization supported: 1) //my-page/s/hair/brown/eyes/blue/born/1989-02-23 creates three associative REQUEST parameters, and 2) //my-page/r/brown/blue/1989-02-23 creates the equivalent non-associative array, and it is up to the model to figure out what the variables mean',
+
+        ),
+        'repository' => array(
+            'location' => 'https://github.com/CompassPointMedia/buildingthebatcave-0-2',
+            'contact' => 'Samuel Fullman <sam-git@samuelfullman.com>',
+            'final_commit' => '(unspecified)',
         ),
 
     ),

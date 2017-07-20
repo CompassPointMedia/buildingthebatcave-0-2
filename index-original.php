@@ -21,7 +21,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/assets/config.php');
 <html>
 <!-- document structure compliments of https://css-tricks.com/snippets/html/html5-page-structure/ -->
 <head>
-    <link rel="stylesheet" type="text/css" href="/assets/style-global.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/style-global.css" />
+    <script language="JavaScript" type="text/javascript" src="/assets/js/common.js" ></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php
     echo $content[$thisVersion]['navigation'][$fileName][1];
