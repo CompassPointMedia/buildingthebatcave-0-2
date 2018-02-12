@@ -149,8 +149,6 @@ body.version-0-3{
     color: beige;
 }
 .version-0-3 h1, .version-0-3 h2, .version-0-3 h3{
-    font-weight: 400;
-    font-family: "Lucida Grande";
     background-color: #333333;
     color: darkcyan;
 }
@@ -162,9 +160,6 @@ body.version-0-3{
     color:#bbbbbb;
     background-color: #333333;
     margin: 0px auto;
-}
-.version-0-3 h1, .version-0-3 h2, .version-0-3 h3{
-    font-family: Georgia, Serif;
 }
 .version-0-3 #header{
     position: relative;
@@ -185,19 +180,6 @@ body.version-0-3{
     top:10px;
     right:10px;
     color: #666;
-}
-
-.version-0-3 .nav li{
-    display: inline;
-    background-color: lightblue;
-    padding: 10px;
-    margin-right: 10px;
-}
-.version-0-3 .nav li a{
-    font-weight: 400;
-    font-size:115%;
-    text-decoration: none;
-    color: #333;
 }
 
 .version-0-3 #legal{
