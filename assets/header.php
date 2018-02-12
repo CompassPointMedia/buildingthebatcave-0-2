@@ -1,15 +1,6 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Samuel Fullman
- * Date: 12/30/2016
- * Time: 7:42 PM
- */
-?>
-
 <div id="header">
     <h1>Building the Batcave</h1>
-    <ul class="nav">
+    <ul class="<?php echo version_compare($thisVersion, '0.2', 'le') ? 'nav': '';?>">
         <?php
         foreach($content[$thisVersion]['navigation'] as $fileName=>$data){
             ?>

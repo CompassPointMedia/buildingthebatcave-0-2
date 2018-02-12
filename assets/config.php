@@ -11,19 +11,29 @@
 
 define('SITE_ROOT', str_replace('assets/config.php', '', __FILE__));
 define('ASSET_ROOT', SITE_ROOT.'assets/');
+define('PRIVATE_ROOT', SITE_ROOT.'../private/');
 define('CONTENT_ROOT', SITE_ROOT.'content/');
 define('VENDOR_ROOT', ASSET_ROOT.'vendors/');
 define('FUNCTION_ROOT', ASSET_ROOT.'functions/');
 
+define('APP_ENV', strtolower(getenv('AppEnv') ? : 'production'));
+
+if(APP_ENV !== 'production'){
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+
 //require old-fashioned but useful utility functions
 require_once(VENDOR_ROOT.'functions/function_get_file_assets_v100.php');
 require_once(VENDOR_ROOT.'functions/function_js_email_encryptor_v100.php');
+require_once(VENDOR_ROOT.'functions/function_config_get.php');
 
 //--------------- 2017-01-02 begin first Batcave logic for route handling --------------
 //create working variable for parsing
 $req_uri = $_SERVER['REQUEST_URI'];
 
-$__env = new stdClass();
+$_env = new stdClass();
 
 //NOTE: Apache shouldn't contain the hash in the _SERVER environment but let's approach this from extensibility
 //Any actual # should be URLencoded
@@ -131,7 +141,7 @@ $content = array(
     ),
     '0.2' => array(
         /* to be defined and documented in the journal and the README */
-        'comments' => 'BTB version 0.2 - Getting Serious Quickly.  We are now using mod_rewrite with our own home-grown routing system (procedural like the old days), but if I do say so myself quite adaptable.  We\'ve introduced a `content` folder which is registered in .gitignore; still hard-coded pages (no blocks or templates yet), but better organized.  Also we have a version toggler so you can go back to 0.1, or forward when the next changes to the Batcave are made.',
+        'comments' => 'BTB version 0.2 - Getting Serious Quickly.  We are now using mod_rewrite with our own home-grown routing system (procedural like the old days), but if I do say so myself quite adaptable.  We\'ve introduced a `content` folder; still hard-coded pages (no blocks or templates yet), but better organized.  Also we have a version toggler so you can go back to 0.1, or forward when the next changes to the Batcave are made.',
         'navigation' => array(
             'index.php' => array('Home', 'Building the Batcave - Home Page'),
             'philosophy.php' => array('Philosophy', 'Building the Batcave Philosophy - What We\'re Accomplishing Here'),
@@ -145,7 +155,7 @@ $content = array(
         ),
         'updates' => array(
             'Implemented `mod_rewrite`',
-            'Implemented article system; article files are in `/content` folder with prefix granite (a tribute to the difficulties excavating the batcave',
+            'Implemented article system; article files are in `/content` folder with prefix granite (a tribute to the difficulties excavating the batcave)',
             'Further improvements to the routing system; routes are not defined yet, but two types of pretty parameterization supported: 1) //my-page/s/hair/brown/eyes/blue/born/1989-02-23 creates three associative REQUEST parameters, and 2) //my-page/r/brown/blue/1989-02-23 creates the equivalent non-associative array, and it is up to the model to figure out what the variables mean',
 
         ),
@@ -156,21 +166,57 @@ $content = array(
         ),
 
     ),
+    /* this format 0.3.0 seemed to fit SemVer best: https://semver.org/ */
+    '0.3.0' => [
+        'comments' => 'BTB version 0.0.3 - we now want a way to determine if the site is in an "installed" state or not.  This is all very crude and way before the days of using composer or node and dependencies.  But a `git clone` will now pull a blank project with instructions to get the site up and running.',
+        'legal' => array(
+            'license' => 'See the LICENSE file.  This project and all downloads from it are covered under the MIT license',
+            'content' => 'Building the Batcave version 0.3, &copy;2018 by Sam Fullman.  This code may be freely distributed and modified under the MIT license.',
+        ),
+        'updates' => array(
+            '^ improved version reading',
+            '^ implemented a ../private folder and a ../private/config.php file',
+            '^ added bootstrap CSS and jQuery',
+        ),
+        'navigation' => array(
+            'index.php' => array('Home', 'Building the Batcave - Home Page'),
+            'philosophy.php' => array('Philosophy', 'Building the Batcave Philosophy - What We\'re Accomplishing Here'),
+            'articles.php' => array('Articles', 'Batcave technical articles'),
+            'journal.php' => array('Journal', 'Building the Batcave - Development Journal'),
+            'version.php' => array('Version', 'Version of this site'),
+        ),
+        'repository' => array(
+            'location' => 'https://github.com/CompassPointMedia/buildingthebatcave-0-2',
+            'contact' => 'Samuel Fullman <sam-git@samuelfullman.com>',
+            'final_commit' => '(unspecified)',
+        ),
+    ]
 );
 
 //last entry is most current version
 foreach($content as $mostCurrentVersion => $null); //specify the most current version of the site
 
-if(preg_match('/version([-0-9]+)/',$serverSubdomain,$m)){
-    $thisVersion = str_replace('-','.',$m[1]);
+if(preg_match('/^v(ersion)*([0-9]+[-0-9]{1,2})$/',$serverSubdomain,$m)){
+    $thisVersion = str_replace('-','.',$m[2]);
 }else{
     //to include www etc.
     $thisVersion = $mostCurrentVersion;
 }
 
+if(version_compare($thisVersion, '0.3', 'ge')){
+    if(!file_exists(PRIVATE_ROOT.'/config.php')){
+        exit('As of version 0.3.x, a directory named `private` must be present as a sibling directory to this project, containing a file named config.php.  Subdirectories named by the APP_ENV values like vagrant, develop, and production may also be included and contain their own config.php files.');
+    }
+    // Get config files by precedence
+    $config = [PRIVATE_ROOT .'config.php'];
+    $config[] = PRIVATE_ROOT.APP_ENV.'/config.php';
+    $config = config_get($config);
+    extract($config);
+}
+
 $contentFiles = get_file_assets(CONTENT_ROOT);
 
-if($thisVersion !== '0.1'){
+if(version_compare($thisVersion, '0.1', 'gt')){
     //------------- route handling; map request to content assets -----------
     //this is dirt simple because our next dev step on the batcave will be to go to a framework
 

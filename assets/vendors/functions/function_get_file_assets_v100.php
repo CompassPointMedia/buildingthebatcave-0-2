@@ -22,6 +22,9 @@ function get_file_assets($folder, $options=array()){
     ***/
     global $get_file_assets;
     @extract($options);
+    $positiveFilters = empty($positiveFilters) ? [] : $positiveFilters;
+    $negativeFilters = empty($negativeFilters) ? [] : $negativeFilters;
+
     if(!empty($positiveFilters) && !is_array($positiveFilters))$positiveFilters=array($positiveFilters);
     if(!empty($negativeFilters) && !is_array($negativeFilters))$negativeFilters=array($negativeFilters);
 
