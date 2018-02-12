@@ -10,7 +10,7 @@ function js_email_encryptor($email,$text='',$class='',$style=''){
 		return vs echo
 	*/
 	$a=func_get_args();
-	if(is_array($a[1])){
+	if(!empty($a[1]) && is_array($a[1])){
 		unset($text);//2nd param
 		extract($a[1]);//same thing
 	}
